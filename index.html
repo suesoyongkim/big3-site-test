@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="BAS3 CLUB — Exhibition and works by 김서영, 조윤정, 한준희.">
+  <title>BAS3 CLUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jacquard+24&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000;
+      --ink: #f5f5f5;
+      --pink: #ff169b;
+      --gutter-x: clamp(24px, 3.75vw, 72px);
+      --gutter-top: clamp(26px, 2.5vw, 48px);
+      --font: "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      word-break: keep-all;
+    }
+    /* 첫 페이지는 헤더를 포함해 뷰포트에 정확히 맞춥니다. */
+    body.home-active {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    body.home-active .site-header { flex-shrink: 0; }
+    body.home-active main { flex: 1 1 auto; min-height: 0; width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible { outline: 2px solid var(--pink); outline-offset: 6px; }
+    ::selection { color: #000; background: var(--pink); }
+
+    .site-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      padding: var(--gutter-top) var(--gutter-x) 0;
+    }
+    .logo {
+      flex: none;
+      font-family: "Jacquard 24", "Gothic A1", sans-serif;
+      font-size: clamp(32px, 2.3vw, 44px);
+      line-height: .95;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color .2s ease;
+    }
+    .logo.is-active { color: var(--pink); }
+    .primary-nav { display: flex; align-items: center; justify-content: space-between; gap: clamp(16px, 3.3vw, 64px); }
+    .primary-nav a {
+      font-size: clamp(17px, 1.12vw, 22px);
+      line-height: 1.2;
+      font-weight: 700;
+      text-underline-offset: 5px;
+      text-decoration-thickness: 1.5px;
+      white-space: nowrap;
+      transition: color .2s ease;
+    }
+    .primary-nav a:hover, .primary-nav a[aria-current="page"] { color: var(--pink); }
+
+    main { min-height: 0; }
+    .screen { display: none; }
+    .screen.is-visible { display: block; }
+    .home-screen {
+      --preview-top: clamp(38px, 11vh, 158px);
+      --preview-width: clamp(225px, 27vw, 405px);
+      --preview-height: clamp(126.5625px, 15.1875vw, 227.8125px);
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      position: relative;
+      padding: 0 var(--gutter-x) clamp(22px, 5.2vw, 95px);
+      overflow: hidden;
+    }
+    .home-screen.is-visible {
+      display: flex;
+      align-items: flex-end;
+    }
+    .home-content {
+      width: min(1290px, 78%);
+      max-height: 100%;
+      margin-top: 0;
+      overflow-y: auto;
+      scrollbar-width: none;
+      font-size: clamp(15px, .95vw, 18px);
+      line-height: 1.47;
+      letter-spacing: -.025em;
+      overflow-wrap: anywhere;
+    }
+    .home-content::-webkit-scrollbar { display: none; }
+    .home-content p { margin: 0; }
+    /* Home: small, silent and looping Exhibition preview on the right. */
+    .home-feature {
+      position: absolute;
+      right: var(--gutter-x);
+      top: clamp(38px, 11vh, 158px);
+      width: clamp(225px, 27vw, 405px);
+      z-index: 2;
+    }
+    .home-video-link {
+      position: relative;
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #161616;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .home-video-link iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      pointer-events: none;
+    }
+    .home-video-link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255,255,255,.12);
+      pointer-events: none;
+      transition: border-color .2s ease;
+    }
+    .home-video-link:hover::after { border-color: var(--pink); }
+    .home-feature-caption {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: clamp(12px, .84vw, 15px);
+      line-height: 1.35;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .home-feature-caption .arrow { font-size: 21px; line-height: .9; flex: none; }
+    .home-feature-caption:hover { color: var(--pink); }
+    .project-screen {
+      padding: 0 0 0;
+      min-height: calc(100svh - 80px);
+    }
+    .project-intro {
+      padding-inline: var(--gutter-x);
+      margin-top: clamp(90px, 5.2vw, 105px);
+      padding-bottom: 36px;
+    }
+    .project-title {
+      margin: 0 0 clamp(38px, 4vw, 56px);
+      font-size: clamp(65px, 5.4vw, 103px);
+      line-height: .99;
+      letter-spacing: -.065em;
+      font-weight: 750;
+    }
+    .project-meta-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr);
+      gap: clamp(36px, 5vw, 88px);
+      align-items: start;
+    }
+    .project-meta {
+      min-width: 0;
+      margin: 0;
+      font-size: clamp(15px, .98vw, 18px);
+      line-height: 1.5;
+      font-weight: 400;
+      letter-spacing: -.02em;
+    }
+    .project-meta .meta-group {
+      display: block;
+      margin-bottom: 26px;
+    }
+    .project-meta .meta-group:last-child { margin-bottom: 0; }
+    .project-meta .meta-group dt {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0 0 7px;
+      padding: 0;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+      color: #8f8f8f;
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+    .project-meta .meta-group dd {
+      display: block;
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+      font-size: clamp(15px, .98vw, 18px);
+      font-weight: 400;
+      letter-spacing: -.02em;
+      word-break: keep-all;
+    }
+    .project-credits {
+      min-width: 0;
+      padding-top: 3px;
+    }
+    .credit-title {
+      margin: 0 0 7px;
+      color: #8f8f8f;
+      font-size: clamp(13px, .78vw, 16px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+    .credit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .credit-card {
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+    .credit-name {
+      margin: 0 0 7px;
+      font-size: clamp(15px, .98vw, 18px);
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: -.03em;
+    }
+    .credit-role {
+      margin: 0;
+      color: #d0d0d0;
+      font-size: clamp(15px, .98vw, 18px);
+      line-height: 1.5;
+      font-weight: 400;
+      letter-spacing: -.02em;
+    }
+    .project-description {
+      max-width: 1380px;
+      margin: 35px var(--gutter-x) 0;
+      font-size: clamp(15px, .98vw, 19px);
+      line-height: 1.5;
+      letter-spacing: -.02em;
+      overflow-wrap: anywhere;
+    }
+    .project-description p { margin: 0; }
+    .project-description .project-question {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-weight: 700;
+      font-size: clamp(20px, 1.4vw, 28px);
+      line-height: 1.4;
+    }
+    .project-video { width: 100%; max-width: none; margin-top: 0; }
+    .project-video-header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0; padding: 18px var(--gutter-x); }
+    .project-video-title { margin: 0; font-size: clamp(18px, 1.25vw, 24px); font-weight: 700; }
+    .project-video-link { color: var(--pink); font-size: clamp(14px, .85vw, 17px); text-underline-offset: 4px; white-space: nowrap; }
+    .project-video-frame { position: relative; aspect-ratio: 16 / 9; background: #171717; }
+    .project-video-frame iframe { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; }
+    .member-screen {
+      padding: 0 var(--gutter-x) 100px;
+      min-height: calc(100svh - 78px);
+    }
+    .member-title {
+      margin: clamp(105px, 8vw, 155px) 0 0;
+      font-size: clamp(66px, 9vw, 172px);
+      line-height: 1;
+      letter-spacing: -.075em;
+      font-weight: 750;
+    }
+    .member-caption { margin: 26px 0 0; font-size: clamp(17px, 1vw, 20px); color: #a3a3a3; }
+
+    @media (min-width: 1450px) {
+      .project-description { margin-top: 43px; }
+    }
+    @media (max-width: 1000px) {
+      .site-header { flex-wrap: wrap; gap: 27px; }
+      .primary-nav { width: 100%; justify-content: flex-start; gap: clamp(21px, 5vw, 52px); overflow-x: auto; padding: 2px 0 11px; scrollbar-width: none; }
+      .primary-nav::-webkit-scrollbar { display: none; }
+      .project-intro { margin-top: 80px; padding-bottom: 30px; }
+      .project-meta-wrap { grid-template-columns: 1fr; gap: 34px; }
+      .project-description { margin-top: 32px; }
+      .home-content { width: min(100%, 800px); }
+      .home-screen {
+        --preview-width: clamp(220px, 32vw, 340px);
+        --preview-height: clamp(123.75px, 18vw, 191.25px);
+        --preview-top: clamp(24px, 8vh, 105px);
+      }
+
+    }
+    @media (max-width: 600px) {
+      .site-header { padding-top: 24px; gap: 21px; }
+      .logo { font-size: 34px; }
+      .primary-nav { gap: 30px; }
+      .primary-nav a { font-size: 16px; }
+      .home-screen { padding-bottom: 28px; }
+      .home-content { width: 100%; max-height: 42%; font-size: 14px; line-height: 1.53; }
+      .home-screen { --preview-top: 22px; --preview-width: min(64vw, 275px); }
+      .home-ascii {
+        top: clamp(200px, 28vh, 260px);
+        height: auto;
+        width: calc(100% - var(--gutter-x) - var(--gutter-x));
+      }
+      .home-ascii pre { font-size: clamp(2px, .52vw, 3.1px); }
+      .home-feature-caption { font-size: 12px; margin-top: 9px; gap: 8px; }
+      .home-feature-caption .arrow { font-size: 18px; }
+
+      .project-screen { padding-bottom: 0; }
+      .project-intro { margin-top: 67px; padding-bottom: 26px; }
+      .project-title { font-size: clamp(48px, 13vw, 76px); margin-bottom: 28px; }
+      .project-meta { font-size: 15px; line-height: 1.55; }
+      .project-meta .meta-group { margin-bottom: 22px; }
+      .project-meta .meta-group dt { margin-bottom: 10px; }
+      .project-meta .meta-group dd { font-size: 15px; }
+      .credit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+      .credit-role { overflow-wrap: normal; }
+      .credit-role, .credit-name { font-size: 15px; }
+      .project-description { font-size: 14px; margin-top: 32px; }
+      .member-title { margin-top: 90px; }
+    }
+
+    @media (max-width: 430px) {
+      .credit-grid { grid-template-columns: 1fr; gap: 18px; }
+    }
+
+    /* Behance-style single continuous vertical exhibition story */
+    .project-description { padding-bottom: clamp(38px, 5vw, 85px); }
+    .exhibition-flow { width:100%; margin:0; padding:0; }
+    .exhibition-flow.continuous-flow figure { margin:0; padding:0; line-height:0; }
+    /* 첫 번째 이미지(1.png)만 너비 800px, 위아래 여백 100px */
+    .project-screen .exhibition-flow.continuous-flow > figure:first-child {
+      width: 100%;
+      max-width: 800px;
+      margin: 100px auto;
+    }
+    .exhibition-flow.continuous-flow img { display:block; width:100%; height:auto; max-width:none; object-fit:contain; }
+    .exhibition-flow figure { margin:0; min-width:0; overflow:hidden; background:#080808; }
+    .exhibition-flow img { display:block; width:100%; height:auto; }
+    .exhibition-flow .photo-grid { display:grid; gap:0; margin:0; padding:0; }
+    .exhibition-flow .photo-grid.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .exhibition-flow .photo-grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .exhibition-flow .photo-grid img { width:100%; height:100%; aspect-ratio: 1.38; object-fit:cover; }
+    .exhibition-flow .photo-grid.two img { aspect-ratio:1.36; }
+    .exhibition-flow .hero img { width:100%; height:min(92svh,950px); object-fit:cover; object-position:50% 45%; }
+    .exhibition-flow .print-page { display:flex; justify-content:center; background:#000; }
+    .exhibition-flow .print-page img { width:100%; max-width:1600px; height:auto; object-fit:contain; }
+    .exhibition-flow .print-page.portrait img { max-width:1100px; }
+    .exhibition-end { display:flex; justify-content:space-between; align-items:center; padding:24px var(--gutter-x) 45px; color:#a3a3a3; font-size:12px; }
+    .exhibition-end a { color:var(--pink); text-decoration:none; }
+    @media (max-width: 600px) {
+      .exhibition-flow .hero img { height:68svh; }
+      .exhibition-flow .photo-grid.three { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .exhibition-flow .photo-grid.three figure:last-child { grid-column:span 2; }
+      .exhibition-flow .photo-grid.three figure:last-child img { aspect-ratio:1.65; }
+      .exhibition-flow .photo-grid.two img { aspect-ratio:1.03; }
+      .exhibition-end { flex-wrap:wrap; gap:20px; }
+    }
+
+    /* 이미지/영상의 좌우 여백: 숫자만 바꾸면 한 번에 조절할 수 있습니다. */
+    :root { --gallery-side-margin: clamp(20px, 7vw, 112px); }
+    .project-screen .exhibition-flow,
+    .project-screen .project-video {
+      width: calc(100% - 2 * var(--gallery-side-margin));
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* 마지막 이미지와 ASTRALOID — VIDEO 제목 사이에 200px 여백, 영상 아래에는 100px */
+    .project-screen .project-video { margin-top: 200px; margin-bottom: 100px; }
+    .project-screen .project-video-header { padding: 18px 0; }
+    @media (max-width: 600px) {
+      :root { --gallery-side-margin: 18px; }
+    }
+
+    /* Personal portfolio: small name, concise profile and long project images */
+    .member-portfolio { padding-bottom: 80px; }
+    .member-portfolio .member-intro {
+      margin: clamp(75px, 8vw, 138px) auto 0;
+      width: 100%; max-width: 1100px;
+    }
+    .member-portfolio .member-eyebrow { margin: 0 0 14px; color: #929292; font-size: 12px; letter-spacing: .09em; }
+    .member-portfolio .member-name-small { margin: 0; font-size: clamp(26px, 2.45vw, 38px); line-height: 1.15; letter-spacing: -.045em; }
+    .member-portfolio .member-summary { margin: 20px 0 0; color: #ddd; font-size: clamp(15px, 1vw, 18px); line-height: 1.65; max-width: 760px; }
+    .member-portfolio .member-facts {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 32px; column-gap: 42px; row-gap: 24px;
+    }
+    .member-portfolio .member-fact-label { display: block; margin-bottom: 9px; color: #929292; font-size: 13px; font-weight: 400; }
+    .member-portfolio .member-fact-text { display: block; font-size: clamp(14px, .97vw, 17px); line-height: 1.6; }
+    .member-portfolio .portfolio-index {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 15px 30px;
+      margin: 54px auto 0; max-width: 1100px; padding: 20px 0;
+      border-top: 1px solid #333; border-bottom: 1px solid #333;
+    }
+    .member-portfolio .portfolio-index-label { color: #8f8f8f; font-size: 13px; margin-right: auto; }
+    .member-portfolio .portfolio-index button {
+      border: 0; background: transparent; padding: 0;
+      font: inherit; font-size: 14px; color: #f5f5f5; cursor: pointer;
+      text-align: left; line-height: 1.4;
+    }
+    .member-portfolio .portfolio-index button:hover,
+    .member-portfolio .portfolio-index button:focus-visible { color: var(--pink); }
+    .member-portfolio .portfolio-project { max-width: 1100px; margin: 115px auto 0; }
+    .member-portfolio .portfolio-project + .portfolio-project { margin-top: 160px; }
+    .member-portfolio .work-num { margin: 0 0 10px; color: #969696; font-size: 13px; letter-spacing: .075em; }
+    .member-portfolio .work-title { margin: 0; font-size: clamp(26px, 2.7vw, 42px); font-weight: 700; line-height: 1.25; letter-spacing: -.045em; }
+    .member-portfolio .work-subtitle { margin: 13px 0 0; color: #c4c4c4; font-size: clamp(14px, 1vw, 17px); line-height: 1.65; }
+    .member-portfolio .work-tags { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 17px 0 0; font-size: 12px; color: #929292; }
+    .member-portfolio .work-images { margin-top: 38px; }
+    .member-portfolio .work-images:empty { display: none; }
+    .member-portfolio .work-images figure { margin: 0; padding: 0; line-height: 0; }
+    .member-portfolio .work-images img { width: 100%; height: auto; display: block; object-fit: contain; }
+    .member-portfolio .portfolio-subgroup { padding: 68px 0 16px; color: #9e9e9e; font-size: 13px; letter-spacing: .045em; }
+    .member-portfolio .portfolio-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1100px; margin: 110px auto 0; padding: 22px 0 0;
+      border-top: 1px solid #333; color: #9e9e9e; font-size: 12px;
+    }
+    .member-portfolio .portfolio-footer button {
+      color: var(--pink); border: 0; background: transparent; font: inherit; cursor: pointer;
+    }
+    @media (max-width: 700px) {
+      .member-portfolio .member-intro { margin-top: 62px; }
+      .member-portfolio .member-facts { grid-template-columns: 1fr; row-gap: 18px; }
+      .member-portfolio .portfolio-index { gap: 13px 20px; margin-top: 38px; }
+      .member-portfolio .portfolio-index-label { width: 100%; }
+      .member-portfolio .portfolio-project { margin-top: 70px; }
+      .member-portfolio .portfolio-project + .portfolio-project { margin-top: 90px; }
+      .member-portfolio .work-images { margin-top: 24px; }
+      .member-portfolio .portfolio-subgroup { padding-top: 40px; }
+    }
+
+
+    /* 김서영 / SM 신신명조: real2~real9 이미지의 바탕을 흰색으로 유지.
+       배경은 프로젝트 갤러리 너비(최대 1100px)를 넘지 않습니다. */
+    .member-portfolio #kim-sm .work-images {
+      width: 100%;
+      max-width: 100%;
+      background: #fff;
+      overflow: hidden;
+    }
+    .member-portfolio #kim-sm .work-images figure {
+      width: 100%;
+      max-width: 100%;
+      background: #fff;
+      overflow: hidden;
+    }
+    .member-portfolio #kim-sm .work-images img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+    /* 두 개 작업의 약 200자 소개글: 제목/태그 아래 배치 */
+    .member-portfolio .work-description {
+      max-width: 780px;
+      margin: 23px 0 0;
+      font-size: clamp(14px, .98vw, 17px);
+      font-weight: 400;
+      line-height: 1.8;
+      letter-spacing: -.015em;
+      color: #e1e1e1;
+      overflow-wrap: break-word;
+    }
+
+    .member-portfolio .work-tools {
+      margin: 15px 0 0;
+      color: #cfcfcf;
+      font-size: clamp(13px, .92vw, 15px);
+      line-height: 1.6;
+    }
+    /* 조윤정: y 폴더 이미지/영상은 프로젝트 이미지 영역 안에서만 표시합니다. */
+    /* OFFBEAT: Vimeo 임베드 (기존 로컬 MP4 대신 사용) */
+    #cho-offbeat-images .offbeat-vimeo-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #111; }
+    #cho-offbeat-images .offbeat-vimeo-frame iframe { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; }
+    #cho-yoonjung .local-images-picker[hidden] { display: none; }
+    .member-portfolio .work-tools-label {
+      display: inline-block;
+      margin-right: 12px;
+      color: #939393;
+      font-size: 12px;
+      letter-spacing: .04em;
+    }
+
+
+    /* Navigation: pink BAS3 CLUB logo on every page, white on hover. */
+    .logo, .logo.is-active { color: var(--pink); }
+    .logo:hover, .logo.is-active:hover { color: #fff; }
+
+    /* Place the ASCII and Vimeo preview on the same vertical center line. */
+    .home-feature {
+      top: calc(50% - var(--preview-height) / 2 - 100px);
+      width: var(--preview-width);
+    }
+    .home-screen.is-visible {
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .home-ascii {
+      position: absolute;
+      left: var(--gutter-x);
+      top: calc(50% - var(--preview-height) / 2 - 100px);
+      height: var(--preview-height);
+      width: calc(100% - var(--preview-width) - var(--gutter-x) - var(--gutter-x) - var(--gutter-x));
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .home-ascii pre {
+      margin: 0;
+      width: max-content;
+      max-width: none;
+      color: #f7f7f7;
+      font-family: "Courier New", Courier, monospace;
+      font-size: clamp(2.5px, .62vw, 10px);
+      line-height: 1.13;
+      font-weight: 400;
+      letter-spacing: 0;
+      white-space: pre;
+      word-break: normal;
+    }
+    .home-content {
+      width: min(600px, 69%);
+      max-height: none;
+      overflow: visible;
+      flex: 0 0 auto;
+    }
+    .home-content p + p { margin-top: 11px; }
+
+    /* Exhibition follows the same 1100px horizontal rhythm and top spacing as members. */
+    .project-screen .project-intro {
+      max-width: calc(1100px + 2 * var(--gutter-x));
+      margin: clamp(75px, 8vw, 138px) auto 0;
+    }
+    .project-screen .project-description {
+      width: calc(100% - 2 * var(--gutter-x));
+      max-width: 1100px;
+      margin: 35px auto 0;
+    }
+
+    /* Fun Works: orderly grid, playful but consistent tilt for each group. */
+    .fun-screen .member-summary { max-width: 850px; }
+    .fun-screen .fun-project { width: 100%; max-width: 1100px; margin: 112px auto 0; }
+    .fun-screen .fun-project + .fun-project { margin-top: 185px; }
+    .fun-screen .fun-project .work-num { margin-bottom: 10px; }
+    .fun-screen .fun-project .work-title { margin: 0; }
+    .fun-screen .fun-project .work-description { margin-top: 18px; }
+    .fun-screen .fun-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: center;
+      gap: 52px 34px;
+      margin: 65px 0 0;
+    }
+    .fun-screen .fun-gallery .fun-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+      height: clamp(215px, 27vw, 360px);
+      margin: 0;
+      padding: 18px 22px;
+    }
+    .fun-screen .fun-gallery img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      transform-origin: center;
+    }
+    .fun-screen .fun-gallery-year img { transform: rotate(-15deg); }
+    .fun-screen .fun-gallery-birthday img { transform: rotate(15deg); }
+    .fun-screen .portfolio-footer { margin-top: 165px; }
+    @media (max-width: 700px) {
+      .project-screen .project-intro { margin-top: 62px; }
+      .fun-screen .fun-project { margin-top: 75px; }
+      .fun-screen .fun-project + .fun-project { margin-top: 110px; }
+      .fun-screen .fun-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px 10px; margin-top: 35px; }
+      .fun-screen .fun-gallery .fun-item { height: clamp(170px, 55vw, 280px); padding: 15px; }
+      .fun-screen .portfolio-footer { margin-top: 100px; }
+      .home-content { width: min(400px, 100%); font-size: 12px; line-height: 1.4; }
+      .home-content p + p { margin-top: 5px; }
+    }
+    @media (max-width: 600px) {
+      .home-ascii pre { font-size: clamp(2px, .52vw, 3.1px); }
+    }
+
+    /* Small screens: use the actual smaller preview dimensions to keep both centered. */
+    @media (max-width: 700px) {
+      .home-screen {
+        --preview-width: min(64vw, 275px);
+        --preview-height: calc(var(--preview-width) * 9 / 16);
+      }
+      .home-feature, .home-ascii { top: calc(50% - var(--preview-height) / 2 - 100px); }
+    }
+    @media (max-height: 690px) and (min-width: 701px) {
+      .home-content { font-size: 13px; line-height: 1.36; }
+      .home-content p + p { margin-top: 7px; }
+    }
+    @media (max-width: 600px) {
+      .home-content { width: min(400px, 100%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#home" data-page="home" aria-label="BAS3 CLUB 홈">BAS3 CLUB</a>
+    <nav class="primary-nav" aria-label="Main navigation">
+      <a href="#exhibition" data-page="exhibition">Exhibition</a>
+      <a href="#kim-seoyoung" data-page="kim-seoyoung">김서영</a>
+      <a href="#cho-yoonjung" data-page="cho-yoonjung">조윤정</a>
+      <a href="#han-junhee" data-page="han-junhee">한준희</a>
+      <a href="#fun-works" data-page="fun-works">Fun Works</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="screen home-screen" id="home" aria-label="BAS3 CLUB Home">
+      <div class="home-ascii" aria-label="BAS3 CLUB ASCII 아트">
+        <pre>     ##### ##           ##              #######            # ###         ##### /            ##### /    ##        ##### ##   
+  ######  /##        /####            /       ###        /  /###  /   ######  /          ######  /  #####     ######  /##   
+ /#   /  / ##       /  ###           /         ##       /  /  ###/   /#   /  /          /#   /  /     #####  /#   /  / ##   
+/    /  /  ##          /##           ##        #       /  ##   ##   /    /  /          /    /  ##     # ##  /    /  /  ##   
+    /  /   /          /  ##           ###             /  ###            /  /               /  ###     #         /  /   /    
+   ## ##  /           /  ##          ## ###          ##   ##           ## ##              ##   ##     #        ## ##  /     
+   ## ## /           /    ##          ### ###        ##   ##           ## ##              ##   ##     #        ## ## /      
+   ## ##/            /    ##            ### ###      ##   ##           ## ##              ##   ##     #        ## ##/       
+   ## ## ###        /      ##             ### /##    ##   ##           ## ##              ##   ##     #        ## ## ###    
+   ## ##   ###      /########               #/ /##   ##   ##           ## ##              ##   ##     #        ## ##   ###  
+   #  ##     ##    /        ##               #/ ##    ##  ##           #  ##               ##  ##     #        #  ##     ## 
+      /      ##    #        ##                # /      ## #      /        /                 ## #      #           /      ## 
+  /##/     ###    /####      ##     /##        /   n    ###     /     /##/           /       ###      /       /##/     ###  
+ /  ########     /   ####    ## /  /  ########/    u     ######/     /  ############/         #######/       /  ########    
+/     ####      /     ##      #/  /     #####      m       ###      /     #########             ####        /     ####      
+#               #                 |                b                #                                       #               
+ ##              ##                \)              e                 ##                                      ##             
+                                                   r                                                                        
+                                                   3</pre>
+      </div>
+      <div class="home-content">
+        <p>BAS3 CLUB은 김서영, 조윤정, 한준희가 함께 만든 시각디자인 클럽입니다. 2023년, 세 명의 대학교 입학과 함께 시작된 BAS3 CLUB은 그래픽디자인, 사진, 타이포그래피, 편집디자인부터 모션그래픽과 일러스트레이션까지, 각자의 방식으로 시각적인 이야기를 만들고 있습니다.</p>
+        <p>함께 이야기하고, 전시하고, 서로의 작업을 응원하고, 새해와 친구의 생일 축하까지 BAS3 CLUB은 어도비와 함께 디자인합니다. 진지한 작업도 재미있는 실험도 BAS3 CLUB은 앞으로도 아카이브됩니다!</p>
+      </div>
+      <aside class="home-feature" aria-label="BAS3 CLUB Exhibition 미리보기">
+        <a class="home-video-link" href="#exhibition" aria-label="ASTRALOID 전시 페이지 보기">
+          <iframe
+            src="https://player.vimeo.com/video/1165636042?background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;playsinline=1"
+            title="ASTRALOID 미리보기, 음소거 자동재생"
+            loading="eager"
+            tabindex="-1"
+            aria-hidden="true"
+            allow="autoplay; fullscreen; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </a>
+        <a class="home-feature-caption" href="#exhibition">
+          <span class="arrow" aria-hidden="true">↑</span>
+          <span>BAS3 세 명이 함께 참여한 전시를 보러가세요!</span>
+        </a>
+      </aside>
+    </section>
+
+    <section class="screen project-screen" id="exhibition" aria-labelledby="project-heading" hidden>
+      <div class="project-intro">
+        <h1 class="project-title" id="project-heading">ASTRALOID</h1>
+        <div class="project-meta-wrap">
+          <dl class="project-meta project-meta-left">
+            <div class="meta-group"><dt>제작연도</dt><dd>2025</dd></div>
+            <div class="meta-group"><dt>툴</dt><dd>Adobe Illustrator, Adobe Photoshop, Adobe After Effects</dd></div>
+            <div class="meta-group"><dt>분류</dt><dd>타이포그래피, 브랜딩, 영상</dd></div>
+          </dl>
+          <section class="project-credits" aria-labelledby="credit-heading">
+            <h2 class="credit-title" id="credit-heading">기여도</h2>
+            <div class="credit-grid">
+              <div class="credit-card">
+                <p class="credit-name">김서영</p>
+                <p class="credit-role">사진 촬영, 타이포그래피, 편집디자인</p>
+              </div>
+              <div class="credit-card">
+                <p class="credit-name">조윤정</p>
+                <p class="credit-role">모션그래픽, 영상 제작, 3D 그래픽</p>
+              </div>
+              <div class="credit-card">
+                <p class="credit-name">한준희</p>
+                <p class="credit-role">일러스트레이션, 아트북, 타입페이스 디자인</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <div class="project-description">
+        <p>‘영적인’을 뜻하는 Astral과 ‘~같은 존재’를 의미하는 -oid의 합성어인 ‘아스트랄로이드(ASTRALOID)’는 현실을 감당하지 못하고 자기만의 세계에 몰입한 현실 도피형 인간의 새로운 종을 상징하는 조어다.</p>
+        <p>이 전시는 유체이탈이라는 초현실적 행위를 통해 몸과 마음이 분리된 상태를 현실과 자아의 분리, 곧 현실 회피의 은유로 해석한다. 이는 실제 유체이탈이 아니라 이상과 몰입의 과잉이 만들어낸 심리적 이탈을 상징한다.</p>
+        <p>《아스트랄로이드》는 유체이탈의 다양한 사례와 양상, 그리고 유체이탈을 즐기는 페르소나에 주목한다. 이 전시는 유체이탈을 찬양하거나 낭만화하지 않는다. 오히려 그 몰입의 끝에서 마주하게 되는 현실 자아의 붕괴와, 그로 인해 되돌아올 수 없는 ‘나’를 조명한다.</p>
+        <p>이를 통해 전시는 다음의 질문을 던진다.</p>
+        <p class="project-question">“현실을 회피한 대가로 우리는 무엇을 잃는가?”</p>
+      </div>
+      <div class="exhibition-flow continuous-flow" aria-label="ASTRALOID exhibition visual sequence">
+        <figure><img src="1.png" alt="ASTRALOID 1.png" loading="lazy" decoding="async"></figure>
+        <figure><img src="2.png" alt="ASTRALOID 2.png" loading="lazy" decoding="async"></figure>
+        <figure><img src="asset.gif" alt="ASTRALOID asset.gif" loading="lazy" decoding="async"></figure>
+        <figure><img src="3.png" alt="ASTRALOID 3.png" loading="lazy" decoding="async"></figure>
+        <figure><img src="4.png" alt="ASTRALOID 4.png" loading="lazy" decoding="async"></figure>
+        <figure><img src="5.png" alt="ASTRALOID 5.png" loading="lazy" decoding="async"></figure>
+        <figure><img src="6.png" alt="ASTRALOID 6.png" loading="lazy" decoding="async"></figure>
+      </div>
+      <section class="project-video" aria-labelledby="astraloid-video-heading">
+        <div class="project-video-header">
+          <h2 class="project-video-title" id="astraloid-video-heading">ASTRALOID — VIDEO</h2>
+          <a class="project-video-link" href="https://vimeo.com/1165636042" target="_blank" rel="noopener noreferrer">WATCH ON VIMEO ↗</a>
+        </div>
+        <div class="project-video-frame">
+          <iframe src="https://player.vimeo.com/video/1165636042?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" title="ASTRALOID" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </section>
+      <footer class="exhibition-end"><span>ASTRALOID · 2025 · BAS3 CLUB</span><a href="#exhibition" id="exhibition-back-to-top">BACK TO TOP ↑</a></footer>
+    </section>
+
+    <!-- 김서영: 두 가지 프로젝트를 네 컴퓨터의 폴더에서 직접 불러오는 페이지 -->
+    <section class="screen member-screen member-portfolio" id="kim-seoyoung" aria-labelledby="kim-heading" hidden>
+      <header class="member-intro">
+        <p class="member-eyebrow">BAS3 CLUB / MEMBER 01</p>
+        <h1 class="member-name-small" id="kim-heading">김서영 <span lang="en" style="font-size:.55em; font-weight:400; color:#bdbdbd; margin-left:8px;">KIM SOYONG</span></h1>
+        <div class="member-facts">
+          <div><span class="member-fact-label">MAIN FIELDS / 담당 분야</span><span class="member-fact-text">Photography, Web Design, Typography, Editorial Design</span></div>
+          <div><span class="member-fact-label">TOOLS / 사용 툴</span><span class="member-fact-text">Adobe Photoshop, Adobe Illustrator, Lightroom Classic, HTML / CSS</span></div>
+        </div>
+      </header>
+      <nav class="portfolio-index" aria-label="김서영 프로젝트 선택">
+        <span class="portfolio-index-label">SELECTED WORKS (02)</span>
+        <button type="button" data-scroll-target="kim-sm">01 &nbsp; SM 신신명조</button>
+        <button type="button" data-scroll-target="kim-id">02 &nbsp; BX / JIMFF</button>
+      </nav>
+      <article class="portfolio-project" id="kim-sm" aria-labelledby="sm-heading">
+        <p class="work-num">01 / EDITORIAL & TYPOGRAPHY</p>
+        <h2 class="work-title" id="sm-heading">SM 신신명조 서체 비교분석 견본집</h2>
+        <p class="work-subtitle">SM 신신명조의 글자 형태와 조판을 비교하고 살펴보는 서체 견본집입니다.</p>
+        <p class="work-tags"><span>Typography</span><span>Editorial Design</span><span>Type Specimen</span></p>
+        <p class="work-description">SM 신신명조를 여러 조건에서 비교하며 글자의 형태와 조판의 차이를 살펴본 서체 견본집입니다. 자형의 특징과 글줄의 흐름, 크기와 간격에 따라 달라지는 인상을 지면 위에 정리했습니다. 비교 자료와 실제 조판 예시를 함께 구성해 서체를 단순히 보는 데서 그치지 않고, 읽고 선택할 수 있는 자료로 만들고자 했습니다.</p>
+        <p class="work-tools"><span class="work-tools-label">TOOLS</span> Adobe Photoshop · Adobe Illustrator · Adobe InDesign</p>
+        <div class="work-images" aria-label="SM 신신명조 이미지 2부터 9까지">
+          <figure><img data-local-image-path="s/sm/real2.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 2" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real3.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 3" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real4.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 4" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real5.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 5" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real6.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 6" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real7.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 7" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real8.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 8" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/sm/real9.jpeg" alt="SM 신신명조 서체 비교 분석 견본집 9" loading="lazy" decoding="async"></figure>
+        </div>
+      </article>
+      <article class="portfolio-project" id="kim-id" aria-labelledby="id-heading">
+        <p class="work-num">02 / BX DESIGN</p>
+        <h2 class="work-title" id="id-heading">JIMFF — BX DESIGN</h2>
+        <p class="work-subtitle">영화제의 시각적 정체성을 여러 매체로 확장한 BX 디자인 프로젝트입니다.</p>
+        <p class="work-tags"><span>BX Design</span><span>Branding</span><span>Graphic Design</span></p>
+        <p class="work-description">JIMFF를 주제로 시각적 정체성이 다양한 매체에서 어떻게 이어질 수 있는지 탐구한 BX 작업입니다. 로고와 타이포그래피, 색상과 그래픽 요소를 하나의 시각 언어로 구성하고, 인쇄물과 응용 디자인에 확장했습니다. 각각의 결과물은 다른 형태를 갖지만, 전체를 함께 보았을 때 일관된 브랜드 경험이 전달되도록 구성했습니다.</p>
+        <p class="work-tools"><span class="work-tools-label">TOOLS</span> Adobe Photoshop · Adobe Illustrator · Adobe InDesign · Adobe Lightroom Classic</p>
+        <div class="work-images" aria-label="ID 프로젝트 메인 이미지">
+          <figure><img data-local-image-path="s/id/1.png" alt="ID 디자인 작업 1" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2.png" alt="ID 디자인 작업 2" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3.png" alt="ID 디자인 작업 3" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/5.png" alt="ID 디자인 작업 5" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/6.png" alt="ID 디자인 작업 6" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/7.png" alt="ID 디자인 작업 7" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/13.png" alt="ID 디자인 작업 13" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/14.png" alt="ID 디자인 작업 14" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/15.png" alt="ID 디자인 작업 15" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/16.png" alt="ID 디자인 작업 16" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/17.png" alt="ID 디자인 작업 17" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/18.png" alt="ID 디자인 작업 18" loading="lazy" decoding="async"></figure>
+        </div>
+        <div class="portfolio-subgroup">ADDITIONAL WORK / 02</div>
+        <div class="work-images" style="margin-top:0" aria-label="ID 프로젝트 2 폴더 이미지">
+          <figure><img data-local-image-path="s/id/2/1.png" alt="ID 디자인 작업 세트 2, 1" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/2.png" alt="ID 디자인 작업 세트 2, 2" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/3.png" alt="ID 디자인 작업 세트 2, 3" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/4.png" alt="ID 디자인 작업 세트 2, 4" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/5.png" alt="ID 디자인 작업 세트 2, 5" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/6.png" alt="ID 디자인 작업 세트 2, 6" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/7.png" alt="ID 디자인 작업 세트 2, 7" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/8.png" alt="ID 디자인 작업 세트 2, 8" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/9.png" alt="ID 디자인 작업 세트 2, 9" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/10.png" alt="ID 디자인 작업 세트 2, 10" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/11.png" alt="ID 디자인 작업 세트 2, 11" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/2/12.png" alt="ID 디자인 작업 세트 2, 12" loading="lazy" decoding="async"></figure>
+        </div>
+        <div class="portfolio-subgroup">ADDITIONAL WORK / 03</div>
+        <div class="work-images" style="margin-top:0" aria-label="ID 프로젝트 3 폴더 이미지">
+          <figure><img data-local-image-path="s/id/3/1.png" alt="ID 디자인 작업 세트 3, 1" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/2.png" alt="ID 디자인 작업 세트 3, 2" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/3.png" alt="ID 디자인 작업 세트 3, 3" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/4.png" alt="ID 디자인 작업 세트 3, 4" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/5.png" alt="ID 디자인 작업 세트 3, 5" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/6.png" alt="ID 디자인 작업 세트 3, 6" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/7.png" alt="ID 디자인 작업 세트 3, 7" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/8.png" alt="ID 디자인 작업 세트 3, 8" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/9.png" alt="ID 디자인 작업 세트 3, 9" loading="lazy" decoding="async"></figure>
+          <figure><img data-local-image-path="s/id/3/10.png" alt="ID 디자인 작업 세트 3, 10" loading="lazy" decoding="async"></figure>
+        </div>
+      </article>
+      <footer class="portfolio-footer"><span>KIM SOYONG · BAS3 CLUB</span><button type="button" data-scroll-target="kim-seoyoung">BACK TO TOP ↑</button></footer>
+    </section>
+    <!-- 조윤정: 김서영 페이지와 동일한 레이아웃. 실제 사진 파일 경로를 받으면 아래 빈 work-images에 추가합니다. -->
+    <section class="screen member-screen member-portfolio" id="cho-yoonjung" aria-labelledby="cho-heading" hidden>
+      <header class="member-intro">
+        <p class="member-eyebrow">BAS3 CLUB / MEMBER 02</p>
+        <h1 class="member-name-small" id="cho-heading">조윤정 <span lang="en" style="font-size:.55em; font-weight:400; color:#bdbdbd; margin-left:8px;">CHO YOONJUNG</span></h1>
+        <div class="member-facts">
+          <div><span class="member-fact-label">MAIN FIELDS / 담당 분야</span><span class="member-fact-text">Motion Graphics, Moving Image, 3D Graphics, AI-based Visuals</span></div>
+          <div><span class="member-fact-label">TOOLS / 사용 툴</span><span class="member-fact-text">Adobe After Effects, Adobe Audition, Adobe Photoshop, Adobe Illustrator, Adobe Media Encoder, Adobe Premiere Pro, Adobe Firefly</span></div>
+        </div>
+      </header>
+      <nav class="portfolio-index" aria-label="조윤정 프로젝트 선택">
+        <span class="portfolio-index-label">SELECTED WORKS (02)</span>
+        <button type="button" data-scroll-target="cho-hanging">01 &nbsp; Hanging Seasons</button>
+        <button type="button" data-scroll-target="cho-offbeat">02 &nbsp; OFFBEAT</button>
+      </nav>
+      <article class="portfolio-project" id="cho-hanging" aria-labelledby="cho-hanging-heading">
+        <p class="work-num">01 / GRAPHIC &amp; EDITORIAL DESIGN</p>
+        <h2 class="work-title" id="cho-hanging-heading">Hanging Seasons</h2>
+        <p class="work-subtitle">계절의 옷과 소재, 소비 아이템을 담아낸 포스터 달력</p>
+        <p class="work-tags"><span>Graphic Design</span><span>Poster Calendar</span><span>Editorial Design</span></p>
+        <p class="work-description">계절별로 입는 옷의 형태, 소재, 그리고 계절과 어울리는 소비 아이템을 그래픽으로 표현한 포스터 달력이다. 다양한 섬유의 재질을 통해 각 계절의 대표 패션 아이템들을 시각화했으며, 스티치·패치·자수 효과 등 다채로운 그래픽 요소로 계절의 색감과 감성을 담았다. 옷걸이에 걸어두기 좋은 낱장 디피 방식으로 제작되어, 일상 속 계절의 변화를 감각적으로 느낄 수 있다.</p>
+        <div class="work-images" id="cho-hanging-images" aria-label="Hanging Seasons 이미지">
+          <figure><img src="y/poster1.jpg" data-fallback-src="프로젝트폴더/y/poster1.jpg" alt="Hanging Seasons 포스터 1" loading="lazy" decoding="async"></figure>
+          <figure><img src="y/poster2.jpeg" data-fallback-src="프로젝트폴더/y/poster2.jpeg" alt="Hanging Seasons 포스터 2" loading="lazy" decoding="async"></figure>
+          <figure><img src="y/poster3.jpeg" data-fallback-src="프로젝트폴더/y/poster3.jpeg" alt="Hanging Seasons 포스터 3" loading="lazy" decoding="async"></figure>
+          <figure><img src="y/poster4.jpeg" data-fallback-src="프로젝트폴더/y/poster4.jpeg" alt="Hanging Seasons 포스터 4" loading="lazy" decoding="async"></figure>
+          <figure><img src="y/poster5.jpeg" data-fallback-src="프로젝트폴더/y/poster5.jpeg" alt="Hanging Seasons 포스터 5" loading="lazy" decoding="async"></figure>
+        </div>
+      </article>
+      <article class="portfolio-project" id="cho-offbeat" aria-labelledby="cho-offbeat-heading">
+        <p class="work-num">02 / MOTION GRAPHICS</p>
+        <h2 class="work-title" id="cho-offbeat-heading">OFFBEAT</h2>
+        <p class="work-subtitle">그래픽의 움직임과 사운드가 연결되는 모션그래픽 실험</p>
+        <p class="work-tags"><span>Motion Graphics</span><span>Sound Design</span><span>Experimental Visuals</span></p>
+        <p class="work-description">획일적인 질서 속 작은 OFFBEAT의 등장으로 새로운 흐름과 조화를 만들어가는 과정을 표현한 모션그래픽 실험이다. 반복과 충돌, 입자의 확산을 통해 변화하는 시각적 리듬을 구현했으며, 특히 그래픽의 움직임과 변화에 반응하는 사운드 디자인에 집중해 시각과 청각이 유기적으로 연결되는 감각적 경험을 설계했다.</p>
+        <p class="work-tools"><span class="work-tools-label">TOOLS</span> Adobe After Effects · Adobe Audition · Adobe Photoshop · Adobe Illustrator · Adobe Media Encoder · Adobe Premiere Pro · Adobe Firefly</p>
+        <div class="work-images" id="cho-offbeat-images" aria-label="OFFBEAT 영상">
+          <figure>
+            <div class="offbeat-vimeo-frame">
+              <iframe src="https://player.vimeo.com/video/1243748535" title="OFFBEAT — Motion Graphics" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+          </figure>
+        </div>
+      </article>
+      <footer class="portfolio-footer"><span>CHO YOONJUNG · BAS3 CLUB</span><button type="button" data-scroll-target="cho-yoonjung">BACK TO TOP ↑</button></footer>
+    </section>
+    <section class="screen member-screen member-portfolio" id="han-junhee" aria-labelledby="han-heading" hidden>
+      <header class="member-intro">
+        <p class="member-eyebrow">BAS3 CLUB / MEMBER 03</p>
+        <h1 class="member-name-small" id="han-heading">한준희 <span lang="en" style="font-size:.55em; font-weight:400; color:#bdbdbd; margin-left:8px;">HAN JUNHEE</span></h1>
+        <div class="member-facts">
+          <div><span class="member-fact-label">MAIN FIELDS / 담당 분야</span><span class="member-fact-text">Illustration, Poster Design, Art Book, Typeface Design</span></div>
+        </div>
+      </header>
+      <nav class="portfolio-index" aria-label="한준희 프로젝트 선택">
+        <span class="portfolio-index-label">SELECTED WORKS (02)</span>
+        <button type="button" data-scroll-target="han-perfume">01 &nbsp; 비정형 워크샵 포스터</button>
+        <button type="button" data-scroll-target="han-ewha">02 &nbsp; 이화여대 동양화과 석사청구전 포스터</button>
+      </nav>
+      <article class="portfolio-project" id="han-perfume" aria-labelledby="han-perfume-heading">
+        <p class="work-num">01 / POSTER DESIGN</p>
+        <h2 class="work-title" id="han-perfume-heading">비정형 워크샵 포스터</h2>
+        <p class="work-subtitle">2026년 4월 30일</p>
+        <p class="work-tags"><span>Poster Design</span><span>Graphic Design</span><span>Typography</span></p>
+        <p class="work-description">일본의 인기 가수 ‘퍼퓸’의 히트곡을 리패키징한 perfume ~complete best~ 앨범을 홍보하기 위한 트랙 리스트 포스터다. ‘퍼퓸’의 세 멤버를 오리온자리 허리띠를 이루는 별인 알니탁, 알닐람, 민타카에 비유했고, 각 별의 기호를 조합한 그래픽을 중심으로 작업했다.</p>
+        <div class="work-images" id="han-perfume-images" aria-label="비정형 워크샵 포스터 이미지">
+          <figure><img src="j/p1.png" data-fallback-src="프로젝트폴더/j/p1.png" alt="비정형 워크샵 포스터 1" loading="lazy" decoding="async"></figure>
+          <figure><img src="j/p2.png" data-fallback-src="프로젝트폴더/j/p2.png" alt="비정형 워크샵 포스터 2" loading="lazy" decoding="async"></figure>
+        </div>
+      </article>
+      <article class="portfolio-project" id="han-ewha" aria-labelledby="han-ewha-heading">
+        <p class="work-num">02 / POSTER DESIGN</p>
+        <h2 class="work-title" id="han-ewha-heading">이화여대 동양화과 석사청구전 포스터</h2>
+        <p class="work-subtitle">2025년 10월 20일</p>
+        <p class="work-tags"><span>Poster Design</span><span>Exhibition Poster</span><span>Graphic Design</span></p>
+        <p class="work-description">2025년도 이화여대 동양화과 대학원 석사 청구 전시회를 홍보하기 위해 제작한 포스터다. 전시명 ‘낮게 울리는 하양’을 하나의 근원지에서 하얀 빛이 퍼져 나가는 이미지로 해석해, 낮고 잔잔하지만 멀리 번져가는 울림의 감각을 시각적으로 표현했다.</p>
+        <div class="work-images" id="han-ewha-images" aria-label="이화여대 동양화과 석사청구전 포스터 이미지">
+          <figure><img src="j/p3.png" data-fallback-src="프로젝트폴더/j/p3.png" alt="이화여대 동양화과 석사청구전 포스터" loading="lazy" decoding="async"></figure>
+        </div>
+      </article>
+      <footer class="portfolio-footer"><span>HAN JUNHEE · BAS3 CLUB</span><button type="button" data-scroll-target="han-junhee">BACK TO TOP ↑</button></footer>
+    </section>
+    <section class="screen member-screen member-portfolio fun-screen" id="fun-works" aria-labelledby="fun-works-heading" hidden>
+      <header class="member-intro">
+        <p class="member-eyebrow">BAS3 CLUB / JUST FOR FUN</p>
+        <h1 class="member-name-small" id="fun-works-heading">Fun Works</h1>
+        <p class="member-summary">새해가 오면 직접 연하장을 만들어 인쇄하고, 친구의 생일이면 그 친구를 위한 포스터를 제작합니다. 우리에게 디자인은 과제이기도 하지만, 좋아하는 사람에게 마음을 전하는 가장 익숙한 방법이기도 합니다. Adobe 툴로 만들고 실제로 출력해 건넨, 조금 사적이고 꽤 즐거운 작업들입니다.</p>
+      </header>
+      <section class="fun-project" aria-labelledby="fun-new-year-heading">
+        <p class="work-num">01 / NEW YEAR CARDS</p>
+        <h2 class="work-title" id="fun-new-year-heading">연하장</h2>
+        <p class="work-description">한 해가 시작될 때마다 각자의 그림과 그래픽으로 새해 인사를 만듭니다. 화면 속에서 끝내지 않고 종이에 인쇄해 친구들에게 전하는 연하장입니다.</p>
+        <div class="fun-gallery fun-gallery-year" aria-label="BAS3 CLUB 연하장 모음">
+            <figure class="fun-item"><img src="f/y1.jpeg" data-fallback-src="프로젝트폴더/f/y1.jpeg" alt="연하장 1" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/y2.jpeg" data-fallback-src="프로젝트폴더/f/y2.jpeg" alt="연하장 2" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/y3.jpeg" data-fallback-src="프로젝트폴더/f/y3.jpeg" alt="연하장 3" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/y4.jpeg" data-fallback-src="프로젝트폴더/f/y4.jpeg" alt="연하장 4" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/y5.jpeg" data-fallback-src="프로젝트폴더/f/y5.jpeg" alt="연하장 5" loading="lazy" decoding="async"></figure>
+        </div>
+      </section>
+      <section class="fun-project" aria-labelledby="fun-birthday-heading">
+        <p class="work-num">02 / BIRTHDAY POSTERS</p>
+        <h2 class="work-title" id="fun-birthday-heading">생일 포스터</h2>
+        <p class="work-description">친구의 생일에는 그 사람만 알아볼 취향과 농담을 모아 한 장의 포스터를 만듭니다. 누군가의 특별한 날을 우리만의 그래픽으로 축하하는 작은 전통입니다.</p>
+        <div class="fun-gallery fun-gallery-birthday" aria-label="BAS3 CLUB 생일 포스터 모음">
+            <figure class="fun-item"><img src="f/b1.jpeg" data-fallback-src="프로젝트폴더/f/b1.jpeg" alt="생일 포스터 1" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/b2.jpeg" data-fallback-src="프로젝트폴더/f/b2.jpeg" alt="생일 포스터 2" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/b3.jpeg" data-fallback-src="프로젝트폴더/f/b3.jpeg" alt="생일 포스터 3" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/b4.jpeg" data-fallback-src="프로젝트폴더/f/b4.jpeg" alt="생일 포스터 4" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/b5.jpeg" data-fallback-src="프로젝트폴더/f/b5.jpeg" alt="생일 포스터 5" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/b6.jpeg" data-fallback-src="프로젝트폴더/f/b6.jpeg" alt="생일 포스터 6" loading="lazy" decoding="async"></figure>
+            <figure class="fun-item"><img src="f/b7.jpeg" data-fallback-src="프로젝트폴더/f/b7.jpeg" alt="생일 포스터 7" loading="lazy" decoding="async"></figure>
+        </div>
+      </section>
+      <footer class="portfolio-footer"><span>FUN WORKS · BAS3 CLUB</span><button type="button" data-scroll-target="fun-works">BACK TO TOP ↑</button></footer>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const pages = [...document.querySelectorAll('.screen')];
+      const links = [...document.querySelectorAll('[data-page]')];
+      const knownIds = new Set(pages.map(page => page.id));
+
+      function updatePage() {
+        const requested = location.hash.slice(1) || 'home';
+        const id = knownIds.has(requested) ? requested : 'home';
+        document.body.classList.toggle('home-active', id === 'home');
+        pages.forEach(page => {
+          const active = page.id === id;
+          page.hidden = !active;
+          page.classList.toggle('is-visible', active);
+        });
+        links.forEach(link => {
+          const active = link.dataset.page === id;
+          link.classList.toggle('is-active', active && id === 'home');
+          if (active && id !== 'home') link.setAttribute('aria-current', 'page');
+          else link.removeAttribute('aria-current');
+        });
+        window.scrollTo(0, 0);
+        document.title = id === 'home' ? 'BAS3 CLUB' :
+          `${id === 'exhibition' ? 'Exhibition' : document.querySelector('#' + id + ' h1').textContent} — BAS3 CLUB`;
+      }
+
+      document.getElementById('exhibition-back-to-top').addEventListener('click', (event) => {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      document.querySelectorAll('[data-scroll-target]').forEach(button => {
+        button.addEventListener('click', () => {
+          const target = document.getElementById(button.dataset.scrollTarget);
+          if (target) target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        });
+      });
+
+
+      /* 로컬 프로젝트 이미지: s/sm/real2.jpeg ~ real9.jpeg 및 s/id 폴더를 기준으로 찾습니다. */
+      const memberAssets = {
+        sm: {
+          selector: '#kim-sm .work-images',
+          originalPrefix: 's/sm/',
+          roots: ['s/sm', '프로젝트폴더/s/sm'],
+          label: 'SM 신신명조',
+          example: 's/sm/real2.jpeg'
+        },
+        id: {
+          selector: '#kim-id .work-images',
+          originalPrefix: 's/id/',
+          roots: ['s/id', '프로젝트폴더/s/id'],
+          label: 'ID / JIMFF',
+          example: 's/id/1.png'
+        }
+      };
+
+      function canLoadImage(url) {
+        return new Promise(resolve => {
+          const probe = new Image();
+          probe.onload = () => resolve(true);
+          probe.onerror = () => resolve(false);
+          probe.src = url;
+        });
+      }
+
+      // 파일이 없는 이미지에는 깨진 아이콘/경고 문구를 표시하지 않습니다.
+      // 각 이미지를 개별 탐색하므로 일부 파일만 존재해도 나머지는 정상 표시됩니다.
+      async function loadMemberPortfolioImages(cfg) {
+        const images = Array.from(document.querySelectorAll(cfg.selector + ' img[data-local-image-path]'));
+        images.forEach(async img => {
+          const figure = img.closest('figure');
+          if (figure) figure.style.display = 'none';
+          const relativeName = img.getAttribute('data-local-image-path').slice(cfg.originalPrefix.length);
+          for (const root of cfg.roots) {
+            const imagePath = root + '/' + relativeName;
+            if (await canLoadImage(imagePath)) {
+              img.addEventListener('error', () => {
+                if (figure) figure.style.display = 'none';
+              }, { once: true });
+              img.src = imagePath;
+              if (figure) figure.style.display = '';
+              return;
+            }
+          }
+          // 모든 경로에서 찾지 못한 이미지는 빈 상태로 둡니다.
+        });
+      }
+      Object.values(memberAssets).forEach(loadMemberPortfolioImages);
+
+      // Screenshot-grounded local filenames. The fallback handles HTML placed
+      // alongside the '프로젝트폴더' directory instead of directly inside it.
+      document.querySelectorAll('[data-fallback-src]').forEach(media => {
+        const fallback = media.dataset.fallbackSrc;
+        let triedFallback = false;
+        const tryFallback = () => {
+          if (triedFallback) {
+            const figure = media.closest('figure');
+            if (figure) figure.style.display = 'none';
+            return;
+          }
+          triedFallback = true;
+          media.src = fallback;
+          if (media.tagName === 'VIDEO') media.load();
+        };
+        media.addEventListener('error', tryFallback);
+        if (media.tagName === 'VIDEO') {
+          media.addEventListener('loadedmetadata', () => { media.style.display = 'block'; });
+        } else if (media.complete && media.naturalWidth === 0) {
+          tryFallback();
+        }
+      });
+
+      // Exhibition에서도 누락된 파일의 깨진 이미지 표시를 숨깁니다.
+      document.querySelectorAll('.exhibition-flow img').forEach(img => {
+        img.addEventListener('error', () => {
+          const figure = img.closest('figure');
+          if (figure) figure.style.display = 'none';
+        });
+        if (img.complete && img.naturalWidth === 0) {
+          const figure = img.closest('figure');
+          if (figure) figure.style.display = 'none';
+        }
+      });
+
+      window.addEventListener('hashchange', updatePage);
+      updatePage();
+    })();
+  </script>
+</body>
+</html>
